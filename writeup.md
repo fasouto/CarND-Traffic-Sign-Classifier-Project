@@ -106,19 +106,23 @@ My final model consisted of the following layers:
 
 The code for training the model is located in the cells 9 and 11 of the ipython notebook.
 
-The cell #9 contains the hyperparameters, which are the same as the Lenet example plus an `KEEP_PROB` which holds the probabilities for the dropout.
+The cell #9 contains the hyperparameters, which are the same as the Lenet example plus an `KEEP_PROB` which holds the probabilities for the dropout. For the KEEP_PROB I used a value of 0.85 to prevent overfitting.
+
+I decided to set the `BATCH_SIZE` to 75, but my first tought was to increase this because I had a EC2 instance with a GPU good enough to feed lots of images. My understanding is that the bigger the batch size the better and that having an small BATCH_SIZE it was a trafeoff to train the model faster. I tried with a value of 1000 and the accuracy was worse (0.907), seems like with a larger BATCH_SIZE the network loses ability to generalize.
 
 As expected increasing the learning rate decrease significantly the accuracy of the model, however surprisingly(for me) decreasing this value didn't improve the model even incrementing the number of epochs.
 
-The number of epochs was set to 25 because adding more didn't improve the model.
+The number of epochs was set to 25 initially and then increased to 30 once I added the dropout. Adding more epochs didn't improve the model.
+
+For the optimizer the `AdamOptimizer` gave me the best results. I experiment with `tf.train.MomentumOptimizer` with a `momentum=0.9` and the results were not good. Also tried Gradiant descent optimizer and `ProximalGradientDescentOptimizer` with very bad results.
 
 
 #### 5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 My final model results were:
 * training set accuracy of 0.997
-* validation set accuracy of 0.935
-* test set accuracy of 0.921
+* validation set accuracy of 0.940
+* test set accuracy of 0.926
 
 I choose Lenet, because it was tested to be good and I'm still new with these techniques. Also it was suggested in the same notebook, so I just changed the input layer to accept grayscale images and the output layer to the same size as the length of the dataset.
 
